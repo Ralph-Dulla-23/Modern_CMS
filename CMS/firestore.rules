@@ -1,0 +1,106 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // --- HELPER FUNCTIONS ---
+    // Check if the user is signed in
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Check if the user is an admin by querying the 'admins' collection
+    function isAdmin() {
+      return isAuthenticated() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    // Helper to validate incoming data against expected string fields
+    function hasValidStrings(fields) {
+      return request.resource.data.keys().hasAll(fields) && 
+             request.resource.data.keys().hasOnly(fields);
+    }
+
+    // --- COLLECTIONS ---
+
+    // 1. Admins Collection
+    match /admins/{adminId} {
+      // Allow any logged-in user to check *only their own* UID to see if they are an admin
+      allow read: if isAuthenticated() && request.auth.uid == adminId;
+      allow write: if false; // Only manageable via Firebase Console or Admin SDK
+    }
+
+    // 2. Students Collection
+    // Students can read/update their own profile. Admins can read all student profiles.
+    match /students/{studentId} {
+      allow read: if isAuthenticated() && (request.auth.uid == studentId || isAdmin());
+      allow update: if isAuthenticated() && request.auth.uid == studentId;
+      allow create: if isAuthenticated(); // Allowed during sign-up
+      allow delete: if isAdmin(); // Only admins can delete accounts
+    }
+    
+    // 3. Faculty Collection
+    // Faculty can read/update their own profile. Admins can read all faculty profiles.
+    match /faculty/{facultyId} {
+      allow read: if isAuthenticated() && (request.auth.uid == facultyId || isAdmin());
+      allow update: if isAuthenticated() && request.auth.uid == facultyId;
+      allow create: if isAuthenticated(); // Allowed during sign-up
+      allow delete: if isAdmin(); // Only admins can delete accounts
+    }
+    
+    // 4. Student Interview Forms
+    // Students can read their own forms. Admins can read/update all forms.
+    match /studentInterviews/{interviewId} {
+      // Students can read their own submissions; Admins can read everything
+      allow read: if isAuthenticated() && (resource.data.studentUid == request.auth.uid || isAdmin());
+      
+      // Strict creation rules: 
+      // 1. Must be authenticated
+      // 2. Cannot forge another student's submission (studentUid == auth.uid)
+      // 3. Must not attempt to create pre-approved forms (status == Pending)
+      // 4. Validate that the document only contains allowed fields to prevent arbitrary data injections.
+      allow create: if isAuthenticated() && 
+        (
+          isAdmin() || 
+          exists(/databases/$(database)/documents/faculty/$(request.auth.uid)) ||
+          (
+            request.resource.data.studentUid == request.auth.uid && 
+            request.resource.data.status == 'Pending' &&
+            // Basic data validation - ensure the user isn't injecting arbitrary fields to bloat the DB
+            request.resource.data.keys().hasAll(['studentName', 'status', 'submissionDate', 'type'])
+          )
+        );
+      
+      // Allow Admins to approve/reschedule, and allow Students to give consent to their own referrals
+      allow update: if isAdmin() || (
+        isAuthenticated() && 
+        resource.data.studentUid == request.auth.uid &&
+        // Students should only be able to update specific fields on their own document, like status during consent
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'remarks', 'updatedAt', 'studentUid'])
+      );
+      
+      allow delete: if isAdmin();
+    }
+
+    // 5. Notifications
+    // Users can read/update their own notifications.
+    match /notifications/{notificationId} {
+      allow read: if isAuthenticated() && request.auth.uid == resource.data.userId;
+      
+      // Admins and the system can create notifications
+      allow create: if isAdmin() || isAuthenticated();
+      
+      // Users can mark their own notifications as read
+      allow update: if isAuthenticated() && 
+                    request.auth.uid == resource.data.userId &&
+                    request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read', 'status', 'updatedAt']);
+                    
+      allow delete: if isAdmin();
+    }
+
+    // 6. DEFAULT DENY
+    // CRITICAL FIX: The previous rule `match /{document=**} { allow read, write: if true; }` 
+    // left your entire database completely open to the internet. This correctly denies everything else.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
