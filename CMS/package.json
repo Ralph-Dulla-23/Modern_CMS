@@ -1,5 +1,6 @@
 {
-  "name": "my-react-vite-app",
+  "name": "counseling-management-system",
+  "description": "This project is the Counseling Management System (CMS), a modern and secure full-stack web application built to streamline connection and scheduling between students, faculty, and guidance counselors.",
   "private": true,
   "version": "0.0.0",
   "type": "module",

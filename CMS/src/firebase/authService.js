@@ -135,11 +135,13 @@ const handleError = (error) => {
   const errorMessages = {
     'auth/user-not-found': 'Invalid email or password',
     'auth/wrong-password': 'Invalid email or password',
+    'auth/invalid-credential': 'Invalid email or password',
     'auth/email-already-in-use': 'An account with this email already exists',
     'auth/invalid-email': 'Invalid email format',
     'auth/weak-password': 'Password should be at least 6 characters'
   };
 
+  return errorMessages[error.code] || "An error occurred during authentication. Please try again.";
 };
 
 /**

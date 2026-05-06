@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../../firebase/authService";
+import cmslogo from "../../../assets/img/cmslogo.png";
 
 export default function Login() {
   const [role, setRole] = useState("student");
@@ -63,7 +64,7 @@ export default function Login() {
 
         <div className="relative z-10 max-w-lg mx-auto w-full">
           <div className="flex items-center gap-3 mb-12">
-            <img src="src/assets/img/cmslogo.png" alt="University Logo" className="w-12 h-12" onError={(e) => { e.target.style.display = 'none'; }} />
+            <img src={cmslogo} alt="University Logo" className="w-12 h-12" onError={(e) => { e.target.style.display = 'none'; }} />
             <span className="text-xl font-bold tracking-tight">University Portal</span>
           </div>
 
@@ -97,7 +98,7 @@ export default function Login() {
         <div className="w-full max-w-lg my-auto">
           {/* Mobile Logo */}
           <div className="lg:hidden flex items-center gap-3 mb-8 justify-center">
-            <img src="src/assets/img/cmslogo.png" alt="University Logo" className="w-10 h-10" onError={(e) => { e.target.style.display = 'none'; }} />
+            <img src={cmslogo} alt="University Logo" className="w-10 h-10" onError={(e) => { e.target.style.display = 'none'; }} />
             <span className="text-xl font-bold tracking-tight text-[#3B021F]">University Portal</span>
           </div>
 

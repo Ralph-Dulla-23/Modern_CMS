@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useProfile } from "./ProfileContext";
 import { logout } from "../../firebase/authService";
+import cmslogo from "../../assets/img/cmslogo.png";
 
 export default function FacultyNavbar() {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ export default function FacultyNavbar() {
       <div className="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
         {/* Logo */}
         <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate("/Facultydash")}>
-          <img src="/src/assets/img/cmslogo.png" alt="University Logo" className="w-10 h-10" onError={(e) => { e.target.style.display = 'none'; }} />
+          <img src={cmslogo} alt="University Logo" className="w-10 h-10" onError={(e) => { e.target.style.display = 'none'; }} />
           <span className="text-xl font-bold tracking-tight text-[#3B021F] hidden sm:block">Faculty Portal</span>
         </div>
 

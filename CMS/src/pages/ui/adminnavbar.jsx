@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { logout } from "../../firebase/authService";
+import cmslogo from "../../assets/img/cmslogo.png";
 
 export default function AdminNavbar() {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ export default function AdminNavbar() {
       <div className="max-w-[1400px] mx-auto px-6 h-20 flex justify-between items-center">
         {/* Logo */}
         <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate("/Admindashboard")}>
-          <img src="/src/assets/img/cmslogo.png" alt="University Logo" className="w-10 h-10" onError={(e) => { e.target.style.display = 'none'; }} />
+          <img src={cmslogo} alt="University Logo" className="w-10 h-10" onError={(e) => { e.target.style.display = 'none'; }} />
           <span className="text-xl font-bold tracking-tight text-[#3B021F] hidden sm:block">Admin Hub</span>
         </div>
 

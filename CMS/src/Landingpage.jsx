@@ -1,5 +1,7 @@
 import React from "react";
 import { useNavigate } from 'react-router-dom';
+import cmslogo from './assets/img/cmslogo.png';
+import Guidancelogo from './assets/img/Guidancelogo.png';
 
 function App() {
   const navigate = useNavigate();
@@ -24,7 +26,7 @@ function App() {
       <nav className="relative z-20 w-full max-w-[1400px] mx-auto px-6 md:px-12 py-6 flex justify-between items-center">
         <div className="flex items-center gap-3">
           <img
-            src="src/assets/img/cmslogo.png"
+            src={cmslogo}
             alt="CMS Logo"
             className="w-12 h-12 md:w-14 md:h-14 object-contain drop-shadow-sm"
           />
@@ -76,14 +78,14 @@ function App() {
         {/* Right Content / Image Area */}
         <div className="w-full lg:w-[45%] relative mt-12 lg:mt-0 flex flex-col sm:flex-row items-center justify-center lg:justify-end gap-10 lg:gap-14 animate-in fade-in zoom-in-95 duration-1000 delay-200">
           <img
-            src="./src/assets/img/Guidancelogo.png"
+            src={Guidancelogo}
             alt="Guidance Logo"
             className="w-40 md:w-56 lg:w-64 object-contain drop-shadow-md transition-transform duration-700 hover:scale-105"
           />
           <div className="hidden sm:block w-px h-32 bg-slate-300/40"></div>
           <div className="sm:hidden w-32 h-px bg-slate-300/40"></div>
           <img
-            src="./src/assets/img/cmslogo.png"
+            src={cmslogo}
             alt="CMS Logo"
             className="w-40 md:w-56 lg:w-64 object-contain drop-shadow-md transition-transform duration-700 hover:scale-105"
           />
