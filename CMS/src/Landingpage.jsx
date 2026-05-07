@@ -17,10 +17,10 @@ function App() {
   return (
     <div className="relative min-h-screen w-full bg-[#fcfafa] overflow-hidden font-sans">
 
-      {/* Background Mesh Gradient (Mimicking the reference design) */}
-      <div className="absolute top-[-10%] right-[-5%] w-[70vw] h-[70vw] rounded-full bg-[#fad0c4] mix-blend-multiply blur-[120px] opacity-70 pointer-events-none"></div>
-      <div className="absolute top-[10%] right-[15%] w-[50vw] h-[50vw] rounded-full bg-[#ff9a9e] mix-blend-multiply blur-[120px] opacity-40 pointer-events-none"></div>
-      <div className="absolute bottom-[0%] right-[-10%] w-[60vw] h-[70vw] rounded-full bg-[#E0BBD1] mix-blend-multiply blur-[140px] opacity-80 pointer-events-none"></div>
+      {/* Background Mesh Gradient (Aligning with Blushing Peony tones) */}
+      <div className="absolute top-[-10%] right-[-5%] w-[70vw] h-[70vw] rounded-full bg-[#E0BBD1]/40 mix-blend-multiply blur-[120px] opacity-70 pointer-events-none"></div>
+      <div className="absolute top-[10%] right-[15%] w-[50vw] h-[50vw] rounded-full bg-[#E0BBD1]/20 mix-blend-multiply blur-[120px] opacity-40 pointer-events-none"></div>
+      <div className="absolute bottom-[0%] right-[-10%] w-[60vw] h-[70vw] rounded-full bg-[#E0BBD1]/60 mix-blend-multiply blur-[140px] opacity-80 pointer-events-none"></div>
 
       {/* Navigation Bar */}
       <nav className="relative z-20 w-full max-w-[1400px] mx-auto px-6 md:px-12 py-6 flex justify-between items-center">
@@ -30,7 +30,7 @@ function App() {
             alt="CMS Logo"
             className="w-12 h-12 md:w-14 md:h-14 object-contain drop-shadow-sm"
           />
-          <span className="text-xl md:text-2xl font-extrabold text-slate-900 tracking-tight">CMS</span>
+          <span className="text-xl md:text-2xl font-extrabold text-[#3B021F] tracking-tight">CMS</span>
         </div>
 
         <div className="flex items-center gap-4 md:gap-6">
@@ -42,7 +42,7 @@ function App() {
           </button>
           <button
             onClick={handleSignUpClick}
-            className="bg-white text-slate-800 px-5 py-2.5 md:px-7 md:py-3 rounded-full font-bold shadow-sm hover:shadow-md border border-slate-100 transition-all hover:-translate-y-0.5"
+            className="bg-white text-[#3B021F] px-5 py-2.5 md:px-7 md:py-3 rounded-full font-bold shadow-sm hover:shadow-md border border-[#E0BBD1]/30 transition-all hover:-translate-y-0.5"
           >
             Sign Up
           </button>
@@ -68,7 +68,7 @@ function App() {
           <div className="flex flex-wrap items-center gap-6 md:gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
             <button
               onClick={handleSignUpClick}
-              className="bg-[#111] hover:bg-black text-white px-8 py-4 md:px-10 md:py-4.5 rounded-full font-bold shadow-xl transition-all hover:scale-105"
+              className="bg-[#3B021F] hover:bg-[#4B122F] text-white px-8 py-4 md:px-10 md:py-4.5 rounded-full font-bold shadow-xl shadow-[#3B021F]/20 transition-all hover:scale-105"
             >
               Get Started
             </button>
