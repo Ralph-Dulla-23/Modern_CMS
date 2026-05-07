@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProfile } from "../ui/ProfileContext";
 import FacultyNavbar from "../ui/facultynavbar";
-import { submitFacultyReferral } from "../../firebase/facultyReferralService";
+import { submitFacultyReferral, getAllStudents } from "../../firebase/facultyReferralService";
 import { auth, db } from '../../firebase/firebase-config';
 import { doc, getDoc } from 'firebase/firestore';
 import { toast } from 'sonner';
+import Select from 'react-select';
 
 const SelectionCard = ({ value, label, formData, handleCheckboxChange }) => {
   const isSelected = formData.concerns.includes(value);
@@ -36,9 +37,12 @@ export default function Forms() {
   const { openProfile } = useProfile();
   const [step, setStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [studentOptions, setStudentOptions] = useState([]);
+  const [isLoadingStudents, setIsLoadingStudents] = useState(true);
 
   const [formData, setFormData] = useState({
     studentName: "",
+    studentEmail: "", // SECURE BINDING
     courseYearSection: "",
     referralDate: new Date().toISOString().split('T')[0],
     facultyName: "",
@@ -50,6 +54,19 @@ export default function Forms() {
     referredBy: ""
   });
 
+  useEffect(() => {
+    const fetchStudents = async () => {
+      const result = await getAllStudents();
+      if (result.success) {
+        setStudentOptions(result.students);
+      } else {
+        toast.error("Could not load student directory.");
+      }
+      setIsLoadingStudents(false);
+    };
+    fetchStudents();
+  }, []);
+
   const steps = [
     { label: "Target Student", icon: "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 0 00-7-7z" },
     { label: "Primary Concerns", icon: "M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" },
@@ -59,8 +76,8 @@ export default function Forms() {
 
   const nextStep = () => {
     if (step === 0) {
-      if (!formData.studentName.trim()) {
-        toast.error("Please enter the student's name before continuing.");
+      if (!formData.studentName.trim() || !formData.studentEmail) {
+        toast.error("Please select a student from the directory.");
         return;
       }
     }
@@ -69,6 +86,17 @@ export default function Forms() {
 
   const prevStep = () => {
     if (step > 0) setStep(step - 1);
+  };
+
+  const handleStudentSelect = (selectedOption) => {
+    if (selectedOption) {
+      setFormData({
+        ...formData,
+        studentName: selectedOption.label,
+        studentEmail: selectedOption.email,
+        courseYearSection: selectedOption.courseYearSection
+      });
+    }
   };
 
   const handleChange = (e) => {
@@ -97,7 +125,7 @@ export default function Forms() {
       const result = await submitFacultyReferral(formData);
       if (result.success) {
         toast.success("Referral submitted successfully. The student will be notified.");
-        window.location.reload();
+        navigate('/Facultydash');
       } else {
         toast.error(`Failed to submit referral: ${result.error}`);
       }
@@ -170,35 +198,50 @@ export default function Forms() {
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
               <h2 className="text-2xl font-bold text-slate-900 mb-8 pb-4 border-b border-slate-100 flex items-center gap-3">
                 <div className="p-2 bg-[#E0BBD1]/30 rounded-lg text-[#3B021F]">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 0 00-7-7z"></path></svg>
                 </div>
-                Student Information
+                Search Student Directory
               </h2>
 
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">Client's Name <span className="text-[#3B021F]">*</span></label>
-                  <input
-                    type="text"
-                    name="studentName"
-                    value={formData.studentName}
-                    onChange={handleChange}
-                    placeholder="Enter student name"
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#3B021F]/20 focus:border-[#3B021F] transition-all"
+                  <label className="block text-sm font-semibold text-slate-700 mb-2">Select Student <span className="text-[#3B021F]">*</span></label>
+                  <Select
+                    options={studentOptions}
+                    isLoading={isLoadingStudents}
+                    onChange={handleStudentSelect}
+                    placeholder="Search by name or email..."
+                    className="text-sm"
+                    styles={{
+                      control: (base) => ({
+                        ...base,
+                        borderRadius: '0.75rem',
+                        padding: '0.2rem',
+                        border: '1px solid #e2e8f0',
+                        backgroundColor: '#f8fafc'
+                      })
+                    }}
                   />
+                  <p className="text-[10px] text-slate-400 mt-2 px-1 italic">
+                    Referrals are bound to the student's unique university email for security.
+                  </p>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">Course / Year <span className="text-[#3B021F]">*</span></label>
-                  <input
-                    type="text"
-                    name="courseYearSection"
-                    value={formData.courseYearSection}
-                    onChange={handleChange}
-                    placeholder="Enter course/year/section"
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#3B021F]/20 focus:border-[#3B021F] transition-all"
-                  />
-                </div>
+                {formData.studentName && (
+                  <div className="p-4 bg-[#E0BBD1]/10 rounded-xl border border-[#E0BBD1]/30 animate-in fade-in zoom-in-95">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <span className="text-xs font-bold text-[#3B021F] uppercase tracking-wider">Identified Student</span>
+                        <h4 className="font-bold text-slate-900 text-lg mt-1">{formData.studentName}</h4>
+                        <p className="text-sm text-slate-600">{formData.studentEmail}</p>
+                        <p className="text-xs text-slate-500 mt-1">{formData.courseYearSection}</p>
+                      </div>
+                      <div className="p-2 bg-white rounded-lg shadow-sm">
+                        <svg className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 <div>
                   <label className="block text-sm font-semibold text-slate-700 mb-2">Date of Referral <span className="text-[#3B021F]">*</span></label>

@@ -115,7 +115,11 @@ function SubmittedFormsManagement() {
         });
 
         // Sort by newest first
-        processedForms.sort((a, b) => new Date(b.submissionDate) - new Date(a.submissionDate));
+        processedForms.sort((a, b) => {
+          const dateA = a.submissionDate?.toDate ? a.submissionDate.toDate() : new Date(a.submissionDate);
+          const dateB = b.submissionDate?.toDate ? b.submissionDate.toDate() : new Date(b.submissionDate);
+          return dateB - dateA;
+        });
 
         setForms(processedForms);
       } else {
@@ -377,7 +381,7 @@ function SubmittedFormsManagement() {
                         </span>
                       </td>
                       <td className="py-4 px-6 text-sm text-slate-500">
-                        {new Date(student.submissionDate).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
+                        {new Date(student.submissionDate?.toDate ? student.submissionDate.toDate() : student.submissionDate).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
                       </td>
                     </tr>
                   ))

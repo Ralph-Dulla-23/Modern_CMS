@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "firebase-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "firebase-tools",
+        "experimental:mcp"
+      ]
+    }
+  }
+}

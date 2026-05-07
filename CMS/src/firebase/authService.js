@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "./firebase-config"; // Ensure correct Firebase config is imported
 
 /**
@@ -12,6 +12,19 @@ import { auth, db } from "./firebase-config"; // Ensure correct Firebase config 
  */
 export const signUp = async (email, password, role, userData) => {
   try {
+    // SECURITY HARDENING: Domain Whitelisting for Faculty
+    if (role === 'faculty') {
+      const allowedDomains = ['faculty.university.edu', 'university.edu']; // Add your institutional domains here
+      const userDomain = email.split('@')[1];
+      
+      if (!allowedDomains.includes(userDomain)) {
+        return {
+          success: false,
+          message: "Faculty registration is restricted to institutional email domains."
+        };
+      }
+    }
+
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
@@ -20,8 +33,9 @@ export const signUp = async (email, password, role, userData) => {
       ...userData,
       email,
       role,
-      createdAt: new Date().toISOString(),
-      lastLogin: new Date().toISOString(),
+      createdAt: serverTimestamp(),
+      lastLogin: serverTimestamp(),
+      updatedAt: serverTimestamp(),
     });
 
     return {
@@ -59,15 +73,16 @@ export const login = async (email, password) => {
     const adminDoc = await getDoc(doc(db, "admins", user.uid));
     if (adminDoc.exists()) {
       console.log("Admin document found");
+      const userData = adminDoc.data();
       localStorage.setItem('userRole', 'admin');
       localStorage.setItem('userEmail', email);
-      localStorage.setItem('isAdmin', 'true'); // Keeping this for now until we refactor dashboard routes
+      localStorage.setItem('isAdmin', 'true');
 
       return {
         success: true,
         isAdmin: true,
         user: user,
-        userData: adminDoc.data(),
+        userData,
         message: "Admin login successful"
       };
     }
@@ -76,6 +91,7 @@ export const login = async (email, password) => {
     const studentDoc = await getDoc(doc(db, "students", user.uid));
     if (studentDoc.exists()) {
       console.log("Student document found");
+      const userData = studentDoc.data();
       localStorage.setItem('userRole', 'student');
       localStorage.setItem('userEmail', email);
       localStorage.setItem('isAdmin', 'false');
@@ -84,7 +100,7 @@ export const login = async (email, password) => {
         success: true,
         isAdmin: false,
         user: user,
-        userData: studentDoc.data(),
+        userData,
         message: "Login successful"
       };
     }
@@ -93,6 +109,7 @@ export const login = async (email, password) => {
     const facultyDoc = await getDoc(doc(db, "faculty", user.uid));
     if (facultyDoc.exists()) {
       console.log("Faculty document found");
+      const userData = facultyDoc.data();
       localStorage.setItem('userRole', 'faculty');
       localStorage.setItem('userEmail', email);
       localStorage.setItem('isAdmin', 'false');
@@ -101,7 +118,7 @@ export const login = async (email, password) => {
         success: true,
         isAdmin: false,
         user: user,
-        userData: facultyDoc.data(),
+        userData,
         message: "Login successful"
       };
     }

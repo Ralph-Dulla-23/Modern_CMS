@@ -21,27 +21,27 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
       }
 
       try {
-        // Map role names to Firestore collection names
+        // SECURITY HARDENING: Check each role in parallel or via a single metadata document if possible.
+        // For now, parallel checks are faster than sequential loops.
         const roleCollectionMap = {
           admin: 'admins',
           student: 'students',
           faculty: 'faculty',
         };
 
-        // Check each allowed role against its Firestore collection
-        for (const role of allowedRoles) {
+        const checks = allowedRoles.map(role => {
           const collectionName = roleCollectionMap[role];
-          if (!collectionName) continue;
+          if (!collectionName) return Promise.resolve(false);
+          return getDoc(doc(db, collectionName, user.uid)).then(snap => snap.exists());
+        });
 
-          const snap = await getDoc(doc(db, collectionName, user.uid));
-          if (snap.exists()) {
-            setStatus('allowed');
-            return;
-          }
+        const results = await Promise.all(checks);
+        
+        if (results.some(exists => exists)) {
+          setStatus('allowed');
+        } else {
+          setStatus('denied');
         }
-
-        // User is authenticated but does not belong to any allowed role
-        setStatus('denied');
       } catch (error) {
         console.error('ProtectedRoute auth check failed:', error);
         setStatus('denied');

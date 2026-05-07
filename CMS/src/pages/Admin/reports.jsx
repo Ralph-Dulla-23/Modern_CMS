@@ -156,7 +156,8 @@ function Reports() {
 
         // Trend over time (group by YYYY-MM-DD)
         if (data.submissionDate) {
-          const dateStr = data.submissionDate.split('T')[0];
+          const date = data.submissionDate.toDate ? data.submissionDate.toDate() : new Date(data.submissionDate);
+          const dateStr = date.toISOString().split('T')[0];
           dateCounts[dateStr] = (dateCounts[dateStr] || 0) + 1;
         }
 

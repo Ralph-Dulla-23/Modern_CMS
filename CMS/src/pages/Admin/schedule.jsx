@@ -18,7 +18,8 @@ function Schedule() {
 
   // Normalize a date to YYYY-MM-DD string for comparison
   const toDateKey = (d) => {
-    const dt = new Date(d);
+    if (!d) return '';
+    const dt = d.toDate ? d.toDate() : new Date(d);
     return `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}`;
   };
 

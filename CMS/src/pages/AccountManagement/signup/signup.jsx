@@ -160,6 +160,12 @@ export default function Signup() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
+              {role === 'faculty' && (
+                <p className="text-[10px] text-[#3B021F] mt-1.5 ml-1 font-medium flex items-center gap-1">
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                  Must use @faculty.university.edu or @university.edu domain.
+                </p>
+              )}
             </div>
 
             {/* Dynamic Role Fields */}

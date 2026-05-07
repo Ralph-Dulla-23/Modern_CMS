@@ -255,7 +255,11 @@ function AdminDashboard() {
                               </span>
                             )}
                           </td>
-                          <td className="py-4 text-slate-500">{new Date(activity.submissionDate).toLocaleDateString()}</td>
+                          <td className="py-4 text-slate-500">
+                            {activity.submissionDate?.toDate 
+                              ? activity.submissionDate.toDate().toLocaleDateString() 
+                              : activity.submissionDate ? new Date(activity.submissionDate).toLocaleDateString() : 'N/A'}
+                          </td>
                           <td className="py-4">
                             <span className={`inline-block px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider rounded-md
                               ${activity.status?.toLowerCase().includes('pending') ? 'bg-amber-100 text-amber-800' :

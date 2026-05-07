@@ -42,8 +42,12 @@ export default function FacultyDashboard() {
             forms.push({ id: doc.id, ...doc.data() });
           });
 
-          // Sort by newest
-          forms.sort((a, b) => new Date(b.submissionDate) - new Date(a.submissionDate));
+          // Sort by newest first
+          forms.sort((a, b) => {
+            const dateA = a.submissionDate?.toDate ? a.submissionDate.toDate() : new Date(a.submissionDate);
+            const dateB = b.submissionDate?.toDate ? b.submissionDate.toDate() : new Date(b.submissionDate);
+            return dateB - dateA;
+          });
           setReferrals(forms);
           setIsLoading(false);
         });

@@ -1,0 +1,70 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // --- HELPER FUNCTIONS ---
+    function isSignedIn() { return request.auth != null; }
+    function isAdmin() { return isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid)); }
+    function isFaculty() { return isSignedIn() && exists(/databases/$(database)/documents/faculty/$(request.auth.uid)); }
+    function isStudent() { return isSignedIn() && exists(/databases/$(database)/documents/students/$(request.auth.uid)); }
+    function isOwner(userId) { return isSignedIn() && request.auth.uid == userId; }
+    
+    // Validates that only specific fields are being changed
+    function onlyUpdating(fields) {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(fields);
+    }
+
+    // --- COLLECTIONS ---
+
+    match /admins/{adminId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /students/{studentId} {
+      // Faculty need to list/get students to find them for referrals
+      allow get: if isOwner(studentId) || isAdmin() || isFaculty();
+      allow list: if isAdmin() || isFaculty(); 
+      allow create: if isOwner(studentId) && request.resource.data.role == 'student';
+      allow update: if isOwner(studentId) && onlyUpdating(['name', 'course', 'yearLevel', 'section', 'lastLogin', 'updatedAt']);
+    }
+
+    match /faculty/{facultyId} {
+      allow get: if isSignedIn();
+      allow list: if isAdmin();
+      allow create: if isOwner(facultyId) && request.resource.data.role == 'faculty';
+      allow update: if isOwner(facultyId) && onlyUpdating(['name', 'department', 'lastLogin', 'updatedAt']);
+    }
+
+    match /studentInterviews/{formId} {
+      allow read: if isAdmin() 
+                  || (resource.data.studentUid == request.auth.uid)
+                  || (resource.data.studentEmail == request.auth.token.email)
+                  || (resource.data.email == request.auth.token.email) // Support both field names
+                  || (resource.data.facultyId == request.auth.uid);
+      
+      allow create: if isSignedIn() && (
+        // Students creating walk-ins
+        (request.resource.data.type == 'Walk-in' && request.resource.data.studentUid == request.auth.uid) ||
+        // Faculty creating referrals
+        (request.resource.data.type == 'Referral' && request.resource.data.facultyId == request.auth.uid)
+      );
+      
+      allow update: if isAdmin() || (
+        // Allow Faculty to update their own pending referrals
+        isFaculty() && resource.data.facultyId == request.auth.uid && resource.data.status == 'Pending'
+      ) || (
+        // Allow Students to update consent ONLY if the email matches their account
+        isStudent() && 
+        (resource.data.studentEmail == request.auth.token.email) && // SECURE BINDING
+        onlyUpdating(['status', 'remarks', 'studentUid', 'updatedAt'])
+      );
+
+      allow delete: if isAdmin();
+    }
+
+    // Deny all other access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,8 +1,25 @@
 // src/firebase/firestoreService.js
 
 import { db } from './firebase-config';
-import { collection, addDoc, getDocs, getDoc, updateDoc, doc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, getDoc, updateDoc, doc, serverTimestamp } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+
+/**
+ * Safely parses a Firebase date which might be a Timestamp object or an ISO string.
+ * @param {any} date - The date to parse
+ * @returns {Date|null} - A JavaScript Date object or null
+ */
+export const parseFirebaseDate = (date) => {
+  if (!date) return null;
+  if (typeof date.toDate === 'function') {
+    return date.toDate();
+  }
+  // If it's already a Date object
+  if (date instanceof Date) return date;
+  // Fallback for strings or numbers
+  const d = new Date(date);
+  return isNaN(d.getTime()) ? null : d;
+};
 
 /**
  * Submits a student interview form to Firestore.
@@ -23,12 +40,14 @@ export const submitStudentInterviewForm = async (formData) => {
       ...formData,
       studentUid: user ? user.uid : '', // Add the strict relational UID
       email: user ? user.email : '', // Use Firebase Auth email directly
-      submissionDate: new Date().toISOString(), // Add submission date
+      submissionDate: serverTimestamp(), // Use server timestamp for precision
       status: 'Pending', // Initial status
       type: 'Walk-in', // Default type
       referral: 'Self', // Default referral source
       remarks: '', // Empty initially
-      isReferral: false // Flag to identify if it's a referral
+      isReferral: false, // Flag to identify if it's a referral
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
     };
 
     // Add document to Firestore collection
@@ -127,7 +146,7 @@ export const updateFormStatus = async (formId, status, remarks) => {
     await updateDoc(formRef, {
       status,
       remarks,
-      updatedAt: new Date().toISOString() // Add update timestamp
+      updatedAt: serverTimestamp() // Add server update timestamp
     });
 
     return { success: true };
@@ -150,14 +169,26 @@ export const updateConsentStatus = async (formId, consentGiven) => {
       return { success: false, error: "Must be logged in to update consent." };
     }
 
+    // SECURITY HARDENING: Fetch the doc first to verify email binding
+    const formRef = doc(db, "studentInterviews", formId);
+    const formSnap = await getDoc(formRef);
+    
+    if (!formSnap.exists()) {
+      throw new Error("Referral form not found.");
+    }
+    
+    const formData = formSnap.data();
+    if (formData.studentEmail !== user.email) {
+      throw new Error("Unauthorized: This referral is not addressed to you.");
+    }
+
     const newStatus = consentGiven ? "Pending" : "Consent Denied";
     const remarks = consentGiven ? "Student has consented. Awaiting Admin schedule." : "Student declined the referral.";
 
-    const formRef = doc(db, "studentInterviews", formId);
     const updateData = {
       status: newStatus,
       remarks: remarks,
-      updatedAt: new Date().toISOString()
+      updatedAt: serverTimestamp()
     };
 
     // When student consents, bind their UID to the document for relational integrity

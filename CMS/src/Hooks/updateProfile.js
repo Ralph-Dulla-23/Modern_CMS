@@ -1,6 +1,6 @@
 // src/services/profileService.js
 import { getAuth, updateEmail, updatePassword, sendEmailVerification } from 'firebase/auth';
-import { doc, updateDoc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, updateDoc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../firebase/firebase-config';
 import { toast } from 'sonner';
 
@@ -33,10 +33,18 @@ export async function updateUserProfile(newData) {
 
         if (!docSnap.exists()) {
             toast.info("Creating a new profile document as it does not exist.");
-            await setDoc(userRef, { name: newData.name, email: user.email, createdAt: new Date().toISOString() });
+            await setDoc(userRef, { 
+                name: newData.name, 
+                email: user.email, 
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp()
+            });
         } else {
             const { email, password, ...firestoreData } = newData;
-            await updateDoc(userRef, firestoreData);
+            await updateDoc(userRef, {
+                ...firestoreData,
+                updatedAt: serverTimestamp()
+            });
         }
 
         toast.success("Profile updated successfully");

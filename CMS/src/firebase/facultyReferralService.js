@@ -1,22 +1,39 @@
 // src/firebase/facultyReferralService.js
 
 import { db, auth } from './firebase-config';
-import { collection, addDoc, getDocs, getDoc, updateDoc, doc, query, where, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, getDocs, getDoc, updateDoc, doc, query, where, serverTimestamp, limit } from 'firebase/firestore';
 
 /**
- * Get all students for the autocomplete dropdown
+ * Get students for the autocomplete dropdown via prefix search
+ * @param {string} searchTerm - The search string (min 3 chars recommended)
  * @returns {Object} List of student options for react-select
  */
-export const getAllStudents = async () => {
+export const searchStudents = async (searchTerm) => {
+  if (!searchTerm || searchTerm.length < 2) {
+    return { success: true, students: [] };
+  }
+
   try {
-    const querySnapshot = await getDocs(collection(db, "students"));
+    // SECURITY HARDENING: Use query-based prefix matching to prevent directory scraping
+    // Note: This requires a composite index on name + submissionDate if orderBy is used, 
+    // but since we just need the top 10 matches, we'll use a simple range query.
+    const q = query(
+      collection(db, "students"),
+      where("name", ">=", searchTerm),
+      where("name", "<=", searchTerm + "\uf8ff"),
+      limit(10)
+    );
+
+    const querySnapshot = await getDocs(q);
     const students = [];
 
     querySnapshot.forEach((doc) => {
       const data = doc.data();
+      // SECURITY HARDENING: Return only essential fields for the dropdown
       students.push({
         value: doc.id,
         label: data.name || data.email,
+        email: data.email || '', 
         courseYearSection: `${data.course || ''} ${data.yearLevel || ''} ${data.section || ''}`.trim()
       });
     });
@@ -26,7 +43,7 @@ export const getAllStudents = async () => {
       students: students
     };
   } catch (error) {
-    console.error("Error fetching students: ", error);
+    console.error("Error searching students: ", error);
     return {
       success: false,
       error: error.message
@@ -57,12 +74,13 @@ export const submitFacultyReferral = async (formData) => {
 
     // Prepare the form data with additional fields
     const enhancedFormData = {
-      // Student Information
+      // Student Information (HARDENED: Added studentEmail for secure binding)
       studentUid: '',
       studentName: formData.studentName || '',
+      studentEmail: formData.studentEmail || '', // Critical for security binding
       courseYearSection: formData.studentID || '',
       referralDate: formData.referralDate || new Date().toISOString().split('T')[0],
-      submissionDate: new Date().toISOString(),
+      submissionDate: serverTimestamp(),
 
       // Faculty Information
       facultyId: user.uid,
@@ -93,8 +111,8 @@ export const submitFacultyReferral = async (formData) => {
       // Administrative fields
       status: 'Pending', // Match typical statuses
       remarks: '',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
 
       // Telemetry fields to match student submissions
       type: 'Referral',

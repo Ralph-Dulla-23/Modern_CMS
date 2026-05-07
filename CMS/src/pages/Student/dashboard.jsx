@@ -44,7 +44,11 @@ export default function Dashboard() {
           });
 
           // Sort by newest first
-          forms.sort((a, b) => new Date(b.submissionDate) - new Date(a.submissionDate));
+          forms.sort((a, b) => {
+            const dateA = a.submissionDate?.toDate ? a.submissionDate.toDate() : new Date(a.submissionDate);
+            const dateB = b.submissionDate?.toDate ? b.submissionDate.toDate() : new Date(b.submissionDate);
+            return dateB - dateA;
+          });
           setInterviews(forms);
           setIsLoading(false);
         });
