@@ -15,7 +15,7 @@ function App() {
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-[#fcfafa] overflow-hidden font-sans">
+    <div className="relative min-h-screen w-full bg-[#fcfafa] overflow-hidden font-['Plus_Jakarta_Sans',sans-serif]">
 
       {/* Background Mesh Gradient (Aligning with Blushing Peony tones) */}
       <div className="absolute top-[-10%] right-[-5%] w-[70vw] h-[70vw] rounded-full bg-[#E0BBD1]/40 mix-blend-multiply blur-[120px] opacity-70 pointer-events-none"></div>
@@ -36,13 +36,13 @@ function App() {
         <div className="flex items-center gap-4 md:gap-6">
           <button
             onClick={handleLoginUpClick}
-            className="text-slate-600 font-semibold hover:text-[#3B021F] transition-colors"
+            className="text-slate-600 font-semibold hover:text-[#3B021F] transition-colors text-sm md:text-base"
           >
             Login
           </button>
           <button
             onClick={handleSignUpClick}
-            className="bg-white text-[#3B021F] px-5 py-2.5 md:px-7 md:py-3 rounded-full font-bold shadow-sm hover:shadow-md border border-[#E0BBD1]/30 transition-all hover:-translate-y-0.5"
+            className="bg-white text-[#3B021F] px-5 py-2.5 md:px-7 md:py-3 rounded-full font-bold shadow-sm hover:shadow-md border border-[#E0BBD1]/30 transition-all hover:-translate-y-0.5 text-sm md:text-base"
           >
             Sign Up
           </button>
@@ -57,18 +57,18 @@ function App() {
 
 
 
-          <h1 className="text-5xl md:text-6xl lg:text-[5rem] font-bold text-slate-900 leading-[1.05] mb-8 tracking-tight animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[clamp(3.5rem,7vw,5rem)] font-extrabold text-slate-900 leading-[1.1] mb-8 tracking-tight animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
             Empowering You <br className="hidden md:block" /> on Your Mental Wellness Journey
           </h1>
 
-          <p className="text-lg md:text-xl text-slate-700/80 leading-relaxed max-w-2xl mb-12 font-medium animate-in fade-in slide-in-from-bottom-4 duration-700 delay-200">
+          <p className="text-base md:text-lg lg:text-xl text-slate-700/80 leading-[1.6] max-w-[65ch] mb-12 font-medium animate-in fade-in slide-in-from-bottom-4 duration-700 delay-200">
             CMS provides a secure and supportive platform for counselors and users to connect, track progress, and achieve lasting well-being. Schedule appointments, and communicate confidently, all in one place.
           </p>
 
           <div className="flex flex-wrap items-center gap-6 md:gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
             <button
               onClick={handleSignUpClick}
-              className="bg-[#3B021F] hover:bg-[#4B122F] text-white px-8 py-4 md:px-10 md:py-4.5 rounded-full font-bold shadow-xl shadow-[#3B021F]/20 transition-all hover:scale-105"
+              className="bg-[#3B021F] hover:bg-[#4B122F] text-white px-8 py-4 md:px-10 md:py-4.5 rounded-full font-bold shadow-xl shadow-[#3B021F]/20 transition-all hover:scale-105 text-base md:text-lg"
             >
               Get Started
             </button>
