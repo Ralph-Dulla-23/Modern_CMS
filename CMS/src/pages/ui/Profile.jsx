@@ -1,14 +1,25 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { updateUserProfile } from "../../Hooks/updateProfile.js";
 import { toast } from "sonner";
 
 export default function ProfilePage({ onClose }) {
+  const navigate = useNavigate();
   const [userData, setUserData] = useState({
     name: "",
     email: "",
     password: ""
   });
   const [isLoading, setIsLoading] = useState(false);
+
+  const handleClose = () => {
+    if (onClose) {
+      onClose();
+    } else {
+      // Fallback for when rendered as a standalone page via router
+      navigate(-1);
+    }
+  };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -25,10 +36,10 @@ export default function ProfilePage({ onClose }) {
     try {
       if (typeof updateUserProfile === 'function') {
         await updateUserProfile(userData);
-        onClose();
+        handleClose();
       } else {
         toast.info("Development Note: Profile Update logic requires a functional Firebase mutation hook. Closing modal cleanly.");
-        onClose();
+        handleClose();
       }
     } catch (error) {
       console.error("Profile update failed and was caught by the component.");
@@ -43,7 +54,7 @@ export default function ProfilePage({ onClose }) {
 
         {/* Close Button */}
         <button
-          onClick={onClose}
+          onClick={handleClose}
           className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 bg-slate-100 hover:bg-rose-50 hover:text-rose-600 rounded-full flex items-center justify-center text-slate-500 transition-all z-10"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
@@ -69,7 +80,7 @@ export default function ProfilePage({ onClose }) {
                 name="name"
                 value={userData.name}
                 onChange={handleInputChange}
-                placeholder="Dr. John Doe"
+                placeholder="Juan Dela Cruz"
                 className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#3B021F]/20 focus:border-[#3B021F] transition-all"
               />
             </div>
@@ -81,6 +92,7 @@ export default function ProfilePage({ onClose }) {
                 name="email"
                 value={userData.email}
                 onChange={handleInputChange}
+                placeholder="name@university.edu"
                 className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#3B021F]/20 focus:border-[#3B021F] transition-all"
               />
             </div>
@@ -100,7 +112,7 @@ export default function ProfilePage({ onClose }) {
             <div className="flex justify-end gap-3 mt-6 pt-6 border-t border-slate-100">
               <button
                 type="button"
-                onClick={onClose}
+                onClick={handleClose}
                 className="px-6 py-2.5 bg-slate-100 font-semibold text-slate-600 hover:bg-slate-200 hover:text-slate-800 rounded-full transition-colors text-sm"
               >
                 Cancel

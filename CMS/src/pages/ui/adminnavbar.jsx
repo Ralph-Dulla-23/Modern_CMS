@@ -1,11 +1,13 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useProfile } from "./ProfileContext";
 import { logout } from "../../firebase/authService";
 import cmslogo from "../../assets/img/cmslogo.png";
 
 export default function AdminNavbar() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { openProfile } = useProfile();
 
   const navItems = [
     { name: "Dashboard", path: "/Admindashboard" },
@@ -13,7 +15,6 @@ export default function AdminNavbar() {
     { name: "Submission", path: "/SubmittedFormsManagement" },
     { name: "Schedule", path: "/Schedule" },
     { name: "History", path: "/History" },
-    { name: "Profile", path: "/AProfile" },
   ];
 
   const handleLogout = async () => {
@@ -47,6 +48,13 @@ export default function AdminNavbar() {
               </button>
             );
           })}
+          
+          <button
+            onClick={openProfile}
+            className="px-4 py-2 rounded-full text-sm font-semibold text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-all whitespace-nowrap"
+          >
+            Profile
+          </button>
         </nav>
 
         {/* Action / Logout */}
