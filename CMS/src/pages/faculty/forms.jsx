@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProfile } from "../ui/ProfileContext";
 import FacultyNavbar from "../ui/facultynavbar";
-import { submitFacultyReferral, getAllStudents } from "../../firebase/facultyReferralService";
+import { submitFacultyReferral, searchStudents } from "../../firebase/facultyReferralService";
 import { auth, db } from '../../firebase/firebase-config';
 import { doc, getDoc } from 'firebase/firestore';
 import { toast } from 'sonner';
 import Select from 'react-select';
+import AsyncSelect from 'react-select/async';
 
 const SelectionCard = ({ value, label, formData, handleCheckboxChange }) => {
   const isSelected = formData.concerns.includes(value);
@@ -55,16 +56,9 @@ export default function Forms() {
   });
 
   useEffect(() => {
-    const fetchStudents = async () => {
-      const result = await getAllStudents();
-      if (result.success) {
-        setStudentOptions(result.students);
-      } else {
-        toast.error("Could not load student directory.");
-      }
-      setIsLoadingStudents(false);
-    };
-    fetchStudents();
+    // Note: Student options are now fetched dynamically via the searchStudents function 
+    // in the react-select component below to handle prefix searching securely.
+    setIsLoadingStudents(false);
   }, []);
 
   const steps = [
@@ -206,9 +200,14 @@ export default function Forms() {
               <div className="space-y-6">
                 <div>
                   <label className="block text-sm font-semibold text-slate-700 mb-2">Select Student <span className="text-[#3B021F]">*</span></label>
-                  <Select
-                    options={studentOptions}
-                    isLoading={isLoadingStudents}
+                  <AsyncSelect
+                    cacheOptions
+                    defaultOptions
+                    loadOptions={async (inputValue) => {
+                      if (!inputValue || inputValue.length < 2) return [];
+                      const result = await searchStudents(inputValue);
+                      return result.success ? result.students : [];
+                    }}
                     onChange={handleStudentSelect}
                     placeholder="Search by name or email..."
                     className="text-sm"
