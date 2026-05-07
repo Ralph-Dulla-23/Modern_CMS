@@ -68,7 +68,7 @@ export default function Dashboard() {
   const actionedForms = interviews.filter(i => !i.status?.toLowerCase().includes("pending"));
 
   return (
-    <div className="min-h-screen bg-[#fcfafa] flex flex-col">
+    <div className="min-h-screen bg-[#fcfafa] flex flex-col font-['Plus_Jakarta_Sans',sans-serif]">
       <StudentNavbar />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-6 py-12">
@@ -77,24 +77,24 @@ export default function Dashboard() {
           <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight mb-3">
             Welcome back, <span className="text-[#3B021F]">{fullName || "Student"}</span>
           </h1>
-          <p className="text-slate-500 text-lg">How are you feeling today? We're here to support your mental well-being.</p>
+          <p className="text-slate-600 text-lg font-medium opacity-80">How are you feeling today? We're here to support your mental well-being.</p>
         </div>
 
         {/* Primary Action Card (Quick Schedule) */}
-        <div className="bg-white rounded-3xl p-8 sm:p-10 mb-10 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.05)] border border-slate-100/80 flex flex-col sm:flex-row items-center gap-8">
-          <div className="w-24 h-24 shrink-0 bg-[#E0BBD1]/30 rounded-full flex items-center justify-center text-[#3B021F]">
+        <div className="bg-white rounded-[24px] p-8 sm:p-10 mb-10 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] border border-slate-100 flex flex-col sm:flex-row items-center gap-8 group hover:border-[#E0BBD1]/30 transition-all duration-300">
+          <div className="w-24 h-24 shrink-0 bg-[#E0BBD1]/30 rounded-full flex items-center justify-center text-[#3B021F] transition-transform group-hover:scale-105 duration-500">
             <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
           </div>
           <div className="flex-1 text-center sm:text-left">
             <div className="flex items-center justify-center sm:justify-start gap-3 mb-2">
               <h2 className="text-2xl font-bold text-slate-900">Request Counseling Session</h2>
-              <span className="hidden sm:inline-block px-3 py-1 bg-green-50 text-green-700 text-xs font-bold rounded-full">Available Now</span>
+              <span className="hidden sm:inline-block px-3 py-1 bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wider rounded-full border border-emerald-100">Available Now</span>
             </div>
-            <p className="text-slate-500 mb-6 max-w-2xl leading-relaxed">Connect with a professional counselor for a personalized 1:1 session. We offer both in-person and virtual appointments tailored to your schedule.</p>
+            <p className="text-slate-500 mb-6 max-w-2xl leading-relaxed font-medium">Connect with a professional counselor for a personalized 1:1 session. We offer both in-person and virtual appointments tailored to your schedule.</p>
             <div className="flex flex-wrap gap-4 justify-center sm:justify-start">
               <button
                 onClick={() => navigate('/Request')}
-                className="px-6 py-3 bg-[#3B021F] hover:bg-[#4B122F] text-white rounded-full font-semibold shadow-md shadow-[#3B021F]/20 transition-all hover:-translate-y-0.5"
+                className="px-8 py-3.5 bg-[#3B021F] hover:bg-[#4B122F] text-white rounded-full font-bold shadow-lg shadow-[#3B021F]/20 transition-all hover:-translate-y-0.5"
               >
                 Schedule Appointment
               </button>
@@ -105,45 +105,49 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Column - Upcoming / Pending */}
           <div className="lg:col-span-2 space-y-8">
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100/80">
-              <div className="flex items-center justify-between mb-6">
+            <div className="bg-white rounded-[24px] p-8 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] border border-slate-100">
+              <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-50">
                 <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                  <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                  <div className="p-1.5 bg-slate-50 rounded-lg">
+                    <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                  </div>
                   Action Required & Pending
                 </h3>
               </div>
 
               {isLoading ? (
-                <div className="animate-pulse flex space-x-4">
-                  <div className="rounded-full bg-slate-200 h-10 w-10"></div>
-                  <div className="flex-1 space-y-4 py-1">
-                    <div className="h-2 bg-slate-200 rounded w-3/4"></div>
-                    <div className="h-2 bg-slate-200 rounded"></div>
+                <div className="animate-pulse space-y-6">
+                  <div className="flex space-x-4">
+                    <div className="rounded-full bg-slate-100 h-12 w-12"></div>
+                    <div className="flex-1 space-y-4 py-1">
+                      <div className="h-3 bg-slate-100 rounded w-3/4"></div>
+                      <div className="h-3 bg-slate-100 rounded w-1/2"></div>
+                    </div>
                   </div>
                 </div>
               ) : pendingForms.length === 0 ? (
-                <div className="text-center py-8">
-                  <div className="w-16 h-16 mx-auto bg-slate-50 rounded-full flex items-center justify-center mb-3">
-                    <svg className="w-8 h-8 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+                <div className="text-center py-12">
+                  <div className="w-20 h-20 mx-auto bg-slate-50 rounded-full flex items-center justify-center mb-4 border border-dashed border-slate-200">
+                    <svg className="w-10 h-10 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
                   </div>
-                  <p className="text-slate-500 font-medium">You're all caught up!</p>
-                  <p className="text-sm text-slate-400 mt-1">No pending requests at this time.</p>
+                  <p className="text-slate-500 font-bold text-lg">You're all caught up!</p>
+                  <p className="text-sm text-slate-400 mt-1 font-medium">No pending requests at this time.</p>
                 </div>
               ) : (
                 <div className="space-y-4">
                   {pendingForms.map((interview) => (
-                    <div key={interview.id} className="flex flex-col sm:flex-row justify-between p-5 rounded-xl border border-slate-100 hover:border-slate-200 transition-colors bg-slate-50/50">
-                      <div className="flex items-start gap-4 mb-4 sm:mb-0">
-                        <div className="w-12 h-12 shrink-0 rounded-full bg-amber-50 flex items-center justify-center text-amber-600">
+                    <div key={interview.id} className="flex flex-col sm:flex-row justify-between p-6 rounded-[20px] border border-slate-100 hover:border-[#E0BBD1]/40 transition-colors bg-slate-50/30 group">
+                      <div className="flex items-start gap-5 mb-4 sm:mb-0">
+                        <div className="w-12 h-12 shrink-0 rounded-full bg-amber-50 flex items-center justify-center text-amber-600 border border-amber-100 group-hover:bg-amber-100 transition-colors">
                           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         </div>
                         <div>
-                          <h4 className="font-bold text-slate-900 text-lg">{interview.isReferral ? "Faculty Referral" : "Counseling Request"}</h4>
-                          <p className="text-slate-500 text-sm flex items-center gap-2 mt-1">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                          <h4 className="font-bold text-slate-900 text-lg leading-tight">{interview.isReferral ? "Faculty Referral" : "Counseling Request"}</h4>
+                          <p className="text-slate-500 text-xs font-semibold flex items-center gap-1.5 mt-1.5 uppercase tracking-wider">
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                             Submitted {new Date(interview.submissionDate).toLocaleDateString()}
                           </p>
-                          <span className="inline-block mt-2 px-2.5 py-1 bg-amber-100 text-amber-800 text-xs font-bold rounded-[4px] uppercase tracking-wide">
+                          <span className="inline-block mt-3 px-3 py-1 bg-[#3B021F]/5 text-[#3B021F] text-[10px] font-bold rounded-md uppercase tracking-widest border border-[#3B021F]/10">
                             {interview.status}
                           </span>
                         </div>
@@ -154,13 +158,13 @@ export default function Dashboard() {
                         <div className="flex gap-2 sm:self-center items-center">
                           <button
                             onClick={() => handleConsent(interview.id, true)}
-                            className="px-5 py-2.5 bg-[#3B021F] text-white text-sm font-semibold rounded-full hover:bg-[#4B122F] transition-all shadow-sm"
+                            className="px-6 py-2.5 bg-[#3B021F] text-white text-sm font-bold rounded-full hover:bg-[#4B122F] transition-all shadow-md shadow-[#3B021F]/10"
                           >
                             Accept
                           </button>
                           <button
                             onClick={() => handleConsent(interview.id, false)}
-                            className="px-5 py-2.5 bg-slate-200 text-slate-700 text-sm font-semibold rounded-full hover:bg-slate-300 transition-all shadow-sm"
+                            className="px-6 py-2.5 bg-slate-100 text-slate-700 text-sm font-bold rounded-full hover:bg-slate-200 transition-all"
                           >
                             Decline
                           </button>
@@ -175,29 +179,31 @@ export default function Dashboard() {
 
           {/* Sidebar Column - Notifications & History */}
           <div className="lg:col-span-1 space-y-6">
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100/80">
-              <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
-                <svg className="w-5 h-5 text-[#E0BBD1]" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6h-.001zm0 14h-.001a1 1 0 010 2h.001a1 1 0 010-2z" /></svg>
+            <div className="bg-white rounded-[24px] p-8 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] border border-slate-100">
+              <h3 className="text-xl font-bold text-slate-900 mb-8 flex items-center gap-2">
+                <div className="p-1.5 bg-[#E0BBD1]/20 rounded-lg">
+                  <svg className="w-5 h-5 text-[#3B021F]" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6h-.001zm0 14h-.001a1 1 0 010 2h.001a1 1 0 010-2z" /></svg>
+                </div>
                 Notifications
               </h3>
 
               {isLoading ? (
                 <div className="animate-pulse space-y-4">
-                  <div className="h-10 bg-slate-100 rounded"></div>
-                  <div className="h-10 bg-slate-100 rounded"></div>
+                  <div className="h-12 bg-slate-50 rounded-xl"></div>
+                  <div className="h-12 bg-slate-50 rounded-xl"></div>
                 </div>
               ) : actionedForms.length === 0 ? (
-                <div className="text-center py-6">
-                  <p className="text-slate-500 text-sm">No recent activity.</p>
+                <div className="text-center py-8">
+                  <p className="text-slate-400 text-sm font-medium">No recent activity.</p>
                 </div>
               ) : (
-                <div className="space-y-4 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-200 before:to-transparent">
+                <div className="space-y-6 relative">
                   {actionedForms.slice(0, 5).map((interview) => {
                     const isSuccess = interview.status === 'Accepted' || interview.status === 'Scheduled' || interview.status === 'Completed';
 
                     return (
-                      <div key={interview.id} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                        <div className={`flex items-center justify-center w-10 h-10 rounded-full border-4 border-white shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow-sm ${isSuccess ? 'bg-[#3B021F] text-white' : 'bg-slate-200 text-slate-500'
+                      <div key={interview.id} className="relative flex gap-4 items-start group">
+                        <div className={`flex items-center justify-center w-10 h-10 rounded-full border-4 border-white shrink-0 shadow-sm z-10 ${isSuccess ? 'bg-[#3B021F] text-white' : 'bg-slate-100 text-slate-400'
                           }`}>
                           {isSuccess ? (
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
@@ -205,16 +211,16 @@ export default function Dashboard() {
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                           )}
                         </div>
-                        <div className="w-[calc(100%-3rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl border border-slate-100 bg-white shadow-sm">
-                          <div className="flex items-center justify-between mb-1">
-                            <h4 className="font-bold text-slate-900 text-sm">{isSuccess ? 'Session Approved' : 'Session Updated'}</h4>
-                          </div>
-                          <span className={`inline-block mb-2 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-md ${isSuccess ? 'bg-green-50 text-green-700' : 'bg-slate-100 text-slate-600'
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-bold text-slate-900 text-sm">{isSuccess ? 'Session Approved' : 'Session Updated'}</h4>
+                          <span className={`inline-block mt-1 mb-2 px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest rounded-md ${isSuccess ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-slate-50 text-slate-500 border border-slate-100'
                             }`}>
                             {interview.status}
                           </span>
                           {interview.remarks && (
-                            <p className="text-slate-500 text-xs italic bg-slate-50 p-2 rounded mt-1 border border-slate-100">"{interview.remarks}"</p>
+                            <div className="relative p-3 rounded-xl bg-slate-50 border border-slate-100 mt-2">
+                               <p className="text-slate-500 text-xs italic leading-relaxed">"{interview.remarks}"</p>
+                            </div>
                           )}
                         </div>
                       </div>
@@ -225,19 +231,24 @@ export default function Dashboard() {
             </div>
 
             {/* Quick Links / Info Card */}
-            <div className="bg-[#E0BBD1]/20 rounded-2xl p-6 border border-[#E0BBD1]/30">
-              <h3 className="text-lg font-bold text-[#3B021F] mb-4">Quick Links</h3>
-              <ul className="space-y-3">
+            <div className="bg-[#E0BBD1]/10 rounded-[24px] p-8 border border-[#E0BBD1]/20 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-[#3B021F]/5 rounded-bl-[100px] -mr-8 -mt-8 transition-transform group-hover:scale-110 duration-700"></div>
+              <h3 className="text-lg font-bold text-[#3B021F] mb-6 relative z-10">University Care</h3>
+              <ul className="space-y-4 relative z-10">
                 <li>
-                  <a href="#" className="flex items-center gap-2 text-sm font-medium text-slate-700 hover:text-[#3B021F] transition-colors">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                  <a href="#" className="flex items-center gap-3 text-sm font-bold text-slate-700 hover:text-[#3B021F] transition-colors">
+                    <div className="p-2 bg-white rounded-lg shadow-sm">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    </div>
                     University Resources
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="flex items-center gap-2 text-sm font-medium text-slate-700 hover:text-[#3B021F] transition-colors">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-                    Anonymous Peer Support
+                  <a href="#" className="flex items-center gap-3 text-sm font-bold text-slate-700 hover:text-[#3B021F] transition-colors">
+                    <div className="p-2 bg-white rounded-lg shadow-sm">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                    </div>
+                    Anonymous Support
                   </a>
                 </li>
               </ul>
