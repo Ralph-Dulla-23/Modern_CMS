@@ -68,108 +68,122 @@ export default function Dashboard() {
   const actionedForms = interviews.filter(i => !i.status?.toLowerCase().includes("pending"));
 
   return (
-    <div className="min-h-screen bg-[#fcfafa] flex flex-col font-['Plus_Jakarta_Sans',sans-serif]">
+    <div className="min-h-screen bg-[#fcfafa] flex flex-col font-['Plus_Jakarta_Sans',sans-serif] text-slate-900 overflow-x-hidden">
       <StudentNavbar />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto px-6 py-12">
-        {/* Welcome Section */}
-        <div className="mb-12">
-          <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight mb-3">
-            Welcome back, <span className="text-[#3B021F]">{fullName || "Student"}</span>
+      <main className="flex-1 max-w-6xl w-full mx-auto px-6 py-16 relative">
+        {/* Background Decorative Element - Soft Wash */}
+        <div className="absolute top-0 right-0 -mr-24 mt-24 w-[500px] h-[500px] bg-[#E0BBD1]/10 rounded-full blur-[100px] -z-10"></div>
+        <div className="absolute bottom-0 left-0 -ml-24 mb-24 w-[400px] h-[400px] bg-[#3B021F]/5 rounded-full blur-[80px] -z-10"></div>
+
+        {/* Welcome Section - Calm & Centered */}
+        <div className="mb-16 max-w-[65ch]">
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 leading-[1.1]">
+            Hello, <span className="text-[#3B021F]">{fullName || "Student"}</span>. 
+            <span className="block text-slate-400 font-medium">This is your space.</span>
           </h1>
-          <p className="text-slate-600 text-lg font-medium opacity-80">How are you feeling today? We're here to support your mental well-being.</p>
+          <p className="text-slate-500 text-lg md:text-xl font-medium leading-relaxed">
+            Take a breath. We're here to support your journey and provide the care you deserve.
+          </p>
         </div>
 
-        {/* Primary Action Card (Quick Schedule) */}
-        <div className="bg-white rounded-[24px] p-8 sm:p-10 mb-10 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] border border-slate-100 flex flex-col sm:flex-row items-center gap-8 group hover:border-[#E0BBD1]/30 transition-all duration-300">
-          <div className="w-24 h-24 shrink-0 bg-[#E0BBD1]/30 rounded-full flex items-center justify-center text-[#3B021F] transition-transform group-hover:scale-105 duration-500">
-            <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-          </div>
-          <div className="flex-1 text-center sm:text-left">
-            <div className="flex items-center justify-center sm:justify-start gap-3 mb-2">
-              <h2 className="text-2xl font-bold text-slate-900">Request Counseling Session</h2>
-              <span className="hidden sm:inline-block px-3 py-1 bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wider rounded-full border border-emerald-100">Available Now</span>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          {/* Primary Column */}
+          <div className="lg:col-span-8 space-y-12">
+            
+            {/* Primary Action - The Gentle Nudge */}
+            <div className="relative group">
+              <div className="absolute inset-0 bg-[#3B021F]/5 rounded-[32px] translate-y-2 translate-x-1 group-hover:translate-y-3 group-hover:translate-x-2 transition-transform duration-500"></div>
+              <div className="relative bg-white rounded-[32px] p-8 md:p-12 shadow-[0_20px_50px_rgba(59,2,31,0.05)] border border-slate-100 flex flex-col md:flex-row items-center gap-10">
+                <div className="w-24 h-24 shrink-0 bg-[#E0BBD1]/20 rounded-[24px] flex items-center justify-center text-[#3B021F] rotate-3 group-hover:rotate-0 transition-transform duration-500">
+                  <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                  </svg>
+                </div>
+                <div className="flex-1 text-center md:text-left">
+                  <h2 className="text-2xl font-bold text-slate-900 mb-3">Speak with someone today</h2>
+                  <p className="text-slate-500 mb-8 max-w-[50ch] leading-relaxed font-medium">
+                    Whether it's a quick check-in or a deep conversation, our counselors are ready to listen in a safe, confidential space.
+                  </p>
+                  <button
+                    onClick={() => navigate('/Request')}
+                    className="group relative inline-flex items-center justify-center px-10 py-4 bg-[#3B021F] text-white rounded-full font-bold transition-all hover:scale-[1.02] active:scale-[0.98] shadow-xl shadow-[#3B021F]/20"
+                  >
+                    <span>Request a Session</span>
+                    <svg className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
             </div>
-            <p className="text-slate-500 mb-6 max-w-2xl leading-relaxed font-medium">Connect with a professional counselor for a personalized 1:1 session. We offer both in-person and virtual appointments tailored to your schedule.</p>
-            <div className="flex flex-wrap gap-4 justify-center sm:justify-start">
-              <button
-                onClick={() => navigate('/Request')}
-                className="px-8 py-3.5 bg-[#3B021F] hover:bg-[#4B122F] text-white rounded-full font-bold shadow-lg shadow-[#3B021F]/20 transition-all hover:-translate-y-0.5"
-              >
-                Schedule Appointment
-              </button>
-            </div>
-          </div>
-        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Column - Upcoming / Pending */}
-          <div className="lg:col-span-2 space-y-8">
-            <div className="bg-white rounded-[24px] p-8 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] border border-slate-100">
-              <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-50">
-                <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                  <div className="p-1.5 bg-slate-50 rounded-lg">
-                    <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                  </div>
-                  Action Required & Pending
+            {/* Tasks & Pending Section - The Tonal Wash */}
+            <div className="bg-[#E0BBD1]/15 rounded-[40px] p-8 md:p-10 border border-[#E0BBD1]/20">
+              <div className="flex items-center justify-between mb-10">
+                <h3 className="text-xl font-bold text-[#3B021F] flex items-center gap-3">
+                  <span className="w-2 h-8 bg-[#3B021F] rounded-full"></span>
+                  Active Care & Tasks
                 </h3>
               </div>
 
               {isLoading ? (
-                <div className="animate-pulse space-y-6">
-                  <div className="flex space-x-4">
-                    <div className="rounded-full bg-slate-100 h-12 w-12"></div>
-                    <div className="flex-1 space-y-4 py-1">
-                      <div className="h-3 bg-slate-100 rounded w-3/4"></div>
-                      <div className="h-3 bg-slate-100 rounded w-1/2"></div>
-                    </div>
-                  </div>
+                <div className="space-y-4">
+                  {[1, 2].map(i => (
+                    <div key={i} className="h-24 bg-white/50 rounded-3xl animate-pulse"></div>
+                  ))}
                 </div>
               ) : pendingForms.length === 0 ? (
-                <div className="text-center py-12">
-                  <div className="w-20 h-20 mx-auto bg-slate-50 rounded-full flex items-center justify-center mb-4 border border-dashed border-slate-200">
-                    <svg className="w-10 h-10 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+                <div className="bg-white/40 backdrop-blur-sm rounded-[32px] py-16 text-center border border-white/60">
+                  <div className="w-20 h-20 mx-auto bg-white rounded-full flex items-center justify-center mb-6 shadow-sm">
+                    <svg className="w-10 h-10 text-[#E0BBD1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M5 13l4 4L19 7"></path>
+                    </svg>
                   </div>
-                  <p className="text-slate-500 font-bold text-lg">You're all caught up!</p>
-                  <p className="text-sm text-slate-400 mt-1 font-medium">No pending requests at this time.</p>
+                  <p className="text-slate-600 font-bold text-lg italic">Peace of mind.</p>
+                  <p className="text-sm text-slate-400 mt-1 font-medium">No tasks require your attention right now.</p>
                 </div>
               ) : (
-                <div className="space-y-4">
+                <div className="grid gap-6">
                   {pendingForms.map((interview) => (
-                    <div key={interview.id} className="flex flex-col sm:flex-row justify-between p-6 rounded-[20px] border border-slate-100 hover:border-[#E0BBD1]/40 transition-colors bg-slate-50/30 group">
-                      <div className="flex items-start gap-5 mb-4 sm:mb-0">
-                        <div className="w-12 h-12 shrink-0 rounded-full bg-amber-50 flex items-center justify-center text-amber-600 border border-amber-100 group-hover:bg-amber-100 transition-colors">
-                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <div key={interview.id} className="bg-white rounded-[28px] p-6 shadow-[0_10px_30px_rgba(59,2,31,0.03)] border border-white/80 group">
+                      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                        <div className="flex items-center gap-5">
+                          <div className="w-14 h-14 shrink-0 rounded-2xl bg-[#fcfafa] flex items-center justify-center text-[#3B021F] border border-slate-50">
+                            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-slate-900 text-lg leading-tight">{interview.isReferral ? "Faculty Support Referral" : "Counseling Request"}</h4>
+                            <div className="flex items-center gap-3 mt-2">
+                              <span className="px-2.5 py-1 bg-[#3B021F]/5 text-[#3B021F] text-[10px] font-bold rounded-lg uppercase tracking-wider border border-[#3B021F]/10">
+                                {interview.status}
+                              </span>
+                              <p className="text-slate-400 text-[11px] font-bold uppercase tracking-widest">
+                                {new Date(interview.submissionDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+                              </p>
+                            </div>
+                          </div>
                         </div>
-                        <div>
-                          <h4 className="font-bold text-slate-900 text-lg leading-tight">{interview.isReferral ? "Faculty Referral" : "Counseling Request"}</h4>
-                          <p className="text-slate-500 text-xs font-semibold flex items-center gap-1.5 mt-1.5 uppercase tracking-wider">
-                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                            Submitted {new Date(interview.submissionDate).toLocaleDateString()}
-                          </p>
-                          <span className="inline-block mt-3 px-3 py-1 bg-[#3B021F]/5 text-[#3B021F] text-[10px] font-bold rounded-md uppercase tracking-widest border border-[#3B021F]/10">
-                            {interview.status}
-                          </span>
-                        </div>
-                      </div>
 
-                      {/* Explicit Consent Action Loop */}
-                      {interview.status === "Pending Student Consent" && (
-                        <div className="flex gap-2 sm:self-center items-center">
-                          <button
-                            onClick={() => handleConsent(interview.id, true)}
-                            className="px-6 py-2.5 bg-[#3B021F] text-white text-sm font-bold rounded-full hover:bg-[#4B122F] transition-all shadow-md shadow-[#3B021F]/10"
-                          >
-                            Accept
-                          </button>
-                          <button
-                            onClick={() => handleConsent(interview.id, false)}
-                            className="px-6 py-2.5 bg-slate-100 text-slate-700 text-sm font-bold rounded-full hover:bg-slate-200 transition-all"
-                          >
-                            Decline
-                          </button>
-                        </div>
-                      )}
+                        {interview.status === "Pending Student Consent" && (
+                          <div className="flex gap-3 w-full md:w-auto">
+                            <button
+                              onClick={() => handleConsent(interview.id, true)}
+                              className="flex-1 md:flex-none px-8 py-3 bg-[#3B021F] text-white text-sm font-bold rounded-2xl hover:bg-[#4B122F] transition-all"
+                            >
+                              Accept
+                            </button>
+                            <button
+                              onClick={() => handleConsent(interview.id, false)}
+                              className="flex-1 md:flex-none px-8 py-3 bg-slate-50 text-slate-500 text-sm font-bold rounded-2xl hover:bg-slate-100 transition-all border border-slate-100"
+                            >
+                              Decline
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -177,49 +191,46 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Sidebar Column - Notifications & History */}
-          <div className="lg:col-span-1 space-y-6">
-            <div className="bg-white rounded-[24px] p-8 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] border border-slate-100">
-              <h3 className="text-xl font-bold text-slate-900 mb-8 flex items-center gap-2">
-                <div className="p-1.5 bg-[#E0BBD1]/20 rounded-lg">
-                  <svg className="w-5 h-5 text-[#3B021F]" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6h-.001zm0 14h-.001a1 1 0 010 2h.001a1 1 0 010-2z" /></svg>
-                </div>
-                Notifications
+          {/* Secondary Column - The Whisper Sidebar */}
+          <div className="lg:col-span-4 space-y-10">
+            {/* Recent Activity - Minimalist Timeline */}
+            <div className="px-4">
+              <h3 className="text-lg font-bold text-slate-900 mb-8 flex items-center gap-2">
+                Recent Updates
               </h3>
 
               {isLoading ? (
-                <div className="animate-pulse space-y-4">
-                  <div className="h-12 bg-slate-50 rounded-xl"></div>
-                  <div className="h-12 bg-slate-50 rounded-xl"></div>
+                <div className="space-y-6">
+                  {[1, 2, 3].map(i => (
+                    <div key={i} className="flex gap-4">
+                      <div className="w-8 h-8 rounded-full bg-slate-100 animate-pulse"></div>
+                      <div className="flex-1 h-4 bg-slate-50 rounded animate-pulse mt-2"></div>
+                    </div>
+                  ))}
                 </div>
               ) : actionedForms.length === 0 ? (
-                <div className="text-center py-8">
-                  <p className="text-slate-400 text-sm font-medium">No recent activity.</p>
-                </div>
+                <p className="text-slate-400 text-sm font-medium italic">No recent updates.</p>
               ) : (
-                <div className="space-y-6 relative">
-                  {actionedForms.slice(0, 5).map((interview) => {
-                    const isSuccess = interview.status === 'Accepted' || interview.status === 'Scheduled' || interview.status === 'Completed';
-
+                <div className="space-y-10 relative before:absolute before:inset-0 before:left-[15px] before:w-px before:bg-slate-100 before:h-full">
+                  {actionedForms.slice(0, 4).map((interview) => {
+                    const isSuccess = ['Accepted', 'Scheduled', 'Completed'].includes(interview.status);
                     return (
-                      <div key={interview.id} className="relative flex gap-4 items-start group">
-                        <div className={`flex items-center justify-center w-10 h-10 rounded-full border-4 border-white shrink-0 shadow-sm z-10 ${isSuccess ? 'bg-[#3B021F] text-white' : 'bg-slate-100 text-slate-400'
-                          }`}>
-                          {isSuccess ? (
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
-                          ) : (
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                          )}
+                      <div key={interview.id} className="relative flex gap-6 items-start">
+                        <div className={`flex items-center justify-center w-8 h-8 rounded-full shrink-0 z-10 transition-colors ${
+                          isSuccess ? 'bg-[#3B021F] text-white ring-8 ring-[#fcfafa]' : 'bg-white text-slate-300 ring-8 ring-[#fcfafa] border border-slate-100'
+                        }`}>
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d={isSuccess ? "M5 13l4 4L19 7" : "M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"}></path>
+                          </svg>
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <h4 className="font-bold text-slate-900 text-sm">{isSuccess ? 'Session Approved' : 'Session Updated'}</h4>
-                          <span className={`inline-block mt-1 mb-2 px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest rounded-md ${isSuccess ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-slate-50 text-slate-500 border border-slate-100'
-                            }`}>
-                            {interview.status}
-                          </span>
+                        <div className="flex-1 pt-0.5">
+                          <h4 className="font-bold text-slate-900 text-sm">{isSuccess ? 'Session Approved' : 'Request Updated'}</h4>
+                          <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-1">
+                            {interview.status} • {new Date(interview.submissionDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+                          </p>
                           {interview.remarks && (
-                            <div className="relative p-3 rounded-xl bg-slate-50 border border-slate-100 mt-2">
-                               <p className="text-slate-500 text-xs italic leading-relaxed">"{interview.remarks}"</p>
+                            <div className="mt-3 p-4 rounded-2xl bg-white border border-slate-50 text-slate-500 text-xs leading-relaxed shadow-sm italic">
+                              "{interview.remarks}"
                             </div>
                           )}
                         </div>
@@ -230,28 +241,24 @@ export default function Dashboard() {
               )}
             </div>
 
-            {/* Quick Links / Info Card */}
-            <div className="bg-[#E0BBD1]/10 rounded-[24px] p-8 border border-[#E0BBD1]/20 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-[#3B021F]/5 rounded-bl-[100px] -mr-8 -mt-8 transition-transform group-hover:scale-110 duration-700"></div>
-              <h3 className="text-lg font-bold text-[#3B021F] mb-6 relative z-10">University Care</h3>
-              <ul className="space-y-4 relative z-10">
-                <li>
-                  <a href="#" className="flex items-center gap-3 text-sm font-bold text-slate-700 hover:text-[#3B021F] transition-colors">
-                    <div className="p-2 bg-white rounded-lg shadow-sm">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            {/* Support Resources - Soft Surface */}
+            <div className="bg-white rounded-[32px] p-8 border border-slate-100 shadow-[0_10px_40px_rgba(0,0,0,0.02)]">
+              <h3 className="text-lg font-bold text-slate-900 mb-6">Resources</h3>
+              <div className="grid gap-4">
+                {[
+                  { label: "Wellness Guide", icon: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" },
+                  { label: "Emergency Contacts", icon: "M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" }
+                ].map((item, i) => (
+                  <a key={i} href="#" className="flex items-center gap-4 p-4 rounded-2xl hover:bg-[#fcfafa] transition-colors group">
+                    <div className="w-10 h-10 rounded-xl bg-[#E0BBD1]/10 flex items-center justify-center text-[#3B021F] group-hover:bg-[#E0BBD1]/20 transition-colors">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d={item.icon}></path>
+                      </svg>
                     </div>
-                    University Resources
+                    <span className="text-sm font-bold text-slate-600 group-hover:text-slate-900 transition-colors">{item.label}</span>
                   </a>
-                </li>
-                <li>
-                  <a href="#" className="flex items-center gap-3 text-sm font-bold text-slate-700 hover:text-[#3B021F] transition-colors">
-                    <div className="p-2 bg-white rounded-lg shadow-sm">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-                    </div>
-                    Anonymous Support
-                  </a>
-                </li>
-              </ul>
+                ))}
+              </div>
             </div>
           </div>
         </div>

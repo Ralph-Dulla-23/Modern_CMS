@@ -69,9 +69,23 @@ export const login = async (email, password) => {
     const user = userCredential.user;
     console.log("Firebase authentication successful");
 
+    // Helper function to fetch document and safely ignore permission denied errors
+    const safeGetDoc = async (collectionName, uid) => {
+      try {
+        const d = await getDoc(doc(db, collectionName, uid));
+        return d.exists() ? d : null;
+      } catch (err) {
+        if (err.code === 'permission-denied' || err.message.includes('Missing or insufficient permissions')) {
+          console.log(`Permission denied when checking ${collectionName} collection. This is expected if the user does not belong to this role.`);
+          return null;
+        }
+        throw err;
+      }
+    };
+
     // 2. Check if the user is an Admin
-    const adminDoc = await getDoc(doc(db, "admins", user.uid));
-    if (adminDoc.exists()) {
+    const adminDoc = await safeGetDoc("admins", user.uid);
+    if (adminDoc) {
       console.log("Admin document found");
       const userData = adminDoc.data();
       localStorage.setItem('userRole', 'admin');
@@ -88,8 +102,8 @@ export const login = async (email, password) => {
     }
 
     // 3. Check if the user is a Student
-    const studentDoc = await getDoc(doc(db, "students", user.uid));
-    if (studentDoc.exists()) {
+    const studentDoc = await safeGetDoc("students", user.uid);
+    if (studentDoc) {
       console.log("Student document found");
       const userData = studentDoc.data();
       localStorage.setItem('userRole', 'student');
@@ -106,8 +120,8 @@ export const login = async (email, password) => {
     }
 
     // 4. Check if the user is Faculty
-    const facultyDoc = await getDoc(doc(db, "faculty", user.uid));
-    if (facultyDoc.exists()) {
+    const facultyDoc = await safeGetDoc("faculty", user.uid);
+    if (facultyDoc) {
       console.log("Faculty document found");
       const userData = facultyDoc.data();
       localStorage.setItem('userRole', 'faculty');

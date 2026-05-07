@@ -111,8 +111,8 @@ export default function Login() {
               <p className="text-sm font-bold text-emerald-800 mb-2">Demo Accounts:</p>
               <ul className="text-sm text-emerald-700 space-y-1.5 list-disc list-inside">
                 <li><strong>admin@gmail.com</strong> (ADMIN) - 123456</li>
-                <li><strong>fred12@gmail.com</strong> (FACULTY) - fred12</li>
-                <li><strong>piper@gmail.com</strong> (STUDENT) - piper1</li>
+                <li><strong>jdelacruz@faculty.university.edu</strong> (FACULTY) - juandelacruz</li>
+                <li><strong>jdelacruz@uic.edu.ph</strong> (STUDENT) - juandelacruz</li>
               </ul>
             </div>
           </div>

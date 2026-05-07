@@ -311,34 +311,42 @@ function Reports() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fcfafa] flex flex-col">
+    <div className="min-h-screen bg-[#fcfafa] flex flex-col font-['Plus_Jakarta_Sans',sans-serif] overflow-x-hidden">
       <AdminNavbar />
 
-      <main className="flex-1 max-w-[1400px] w-full mx-auto px-6 py-10 flex flex-col">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+      <main className="flex-1 max-w-[1440px] w-full mx-auto px-8 py-16 flex flex-col relative">
+        <div className="absolute top-0 right-0 -mr-32 mt-24 w-[600px] h-[600px] bg-[#E0BBD1]/5 rounded-full blur-[120px] -z-10"></div>
+
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
           <div>
-            <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">System Reports & Analytics</h1>
-            <p className="text-slate-500 mt-1">Visualize student demographics, session trends, and active caseloads.</p>
+            <div className="flex items-center gap-3 mb-4">
+               <span className="px-3 py-1 bg-[#3B021F] text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-md shadow-lg shadow-[#3B021F]/10">System Data</span>
+               <span className="text-slate-300 text-[10px] font-black uppercase tracking-[0.2em]">Reports & Analytics</span>
+            </div>
+            <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-[1.1]">
+              System <span className="text-[#3B021F]">Reports</span>
+            </h1>
+            <p className="text-slate-500 mt-4 text-lg font-medium max-w-[60ch]">Visualize student demographics, session trends, and active caseloads.</p>
           </div>
 
           <div className="flex flex-wrap items-center gap-4">
-            <div className="bg-white rounded-full border border-slate-200 px-4 py-1.5 shadow-sm text-sm font-semibold flex items-center gap-2">
-              <span className="text-slate-500">Timeline:</span>
+            <div className="bg-white rounded-full border border-slate-100 px-6 py-3 shadow-[0_4px_30px_rgba(0,0,0,0.01)] text-[10px] font-black uppercase tracking-[0.1em] flex items-center gap-3">
+              <span className="text-slate-400">Timeline:</span>
               <select
                 value={selectedMonth}
                 onChange={(e) => setSelectedMonth(e.target.value)}
-                className="bg-transparent border-none focus:ring-0 text-[#3B021F] font-bold p-0 cursor-pointer outline-none"
+                className="bg-transparent border-none focus:ring-0 text-[#3B021F] font-black uppercase p-0 cursor-pointer outline-none"
               >
                 {monthOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
               </select>
             </div>
 
-            <div className="bg-white rounded-full border border-slate-200 px-4 py-1.5 shadow-sm text-sm font-semibold flex items-center gap-2">
-              <span className="text-slate-500">College:</span>
+            <div className="bg-white rounded-full border border-slate-100 px-6 py-3 shadow-[0_4px_30px_rgba(0,0,0,0.01)] text-[10px] font-black uppercase tracking-[0.1em] flex items-center gap-3">
+              <span className="text-slate-400">College:</span>
               <select
                 value={selectedCollege}
                 onChange={(e) => setSelectedCollege(e.target.value)}
-                className="bg-transparent border-none focus:ring-0 text-[#3B021F] font-bold p-0 cursor-pointer outline-none"
+                className="bg-transparent border-none focus:ring-0 text-[#3B021F] font-black uppercase p-0 cursor-pointer outline-none"
               >
                 {collegeOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
               </select>
@@ -346,9 +354,9 @@ function Reports() {
 
             <button
               onClick={exportCSV}
-              className="px-5 py-2 bg-[#E0BBD1] text-[#3B021F] hover:bg-[#d5a8c2] rounded-full font-bold shadow-sm transition-all flex items-center gap-2"
+              className="px-8 py-3 bg-[#E0BBD1] text-[#3B021F] hover:bg-[#d5a8c2] rounded-full text-[10px] font-black uppercase tracking-widest shadow-md hover:shadow-lg transition-all flex items-center gap-3 shrink-0"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
               Export CSV
             </button>
           </div>
@@ -364,68 +372,68 @@ function Reports() {
         {!isLoading && (
           <>
             {/* Top Stat Cards */}
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4 sm:gap-6 mb-8">
-              <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100/80">
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Total Submissions</p>
-                <h2 className="text-3xl font-extrabold text-[#3B021F]">{summaryStats.totalSessions}</h2>
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-6 mb-12">
+              <div className="bg-white p-8 rounded-[32px] shadow-[0_20px_50px_rgba(0,0,0,0.02)] border border-slate-100 hover:border-[#E0BBD1]/30 hover:shadow-lg transition-all duration-500">
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">Total Submissions</p>
+                <h2 className="text-4xl lg:text-5xl font-black text-slate-900 tracking-tighter">{summaryStats.totalSessions}</h2>
               </div>
-              <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100/80">
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Daily Avg</p>
-                <h2 className="text-3xl font-extrabold text-slate-900">{summaryStats.avgSessionsPerDay}</h2>
+              <div className="bg-white p-8 rounded-[32px] shadow-[0_20px_50px_rgba(0,0,0,0.02)] border border-slate-100 hover:border-[#E0BBD1]/30 hover:shadow-lg transition-all duration-500">
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">Daily Avg</p>
+                <h2 className="text-4xl lg:text-5xl font-black text-slate-900 tracking-tighter">{summaryStats.avgSessionsPerDay}</h2>
               </div>
-              <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100/80">
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Most Active</p>
-                <h2 className="text-xl font-bold text-slate-900 truncate" title={summaryStats.mostActiveCollege}>{summaryStats.mostActiveCollege}</h2>
+              <div className="bg-white p-8 rounded-[32px] shadow-[0_20px_50px_rgba(0,0,0,0.02)] border border-slate-100 hover:border-[#E0BBD1]/30 hover:shadow-lg transition-all duration-500">
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">Most Active</p>
+                <h2 className="text-2xl lg:text-3xl font-black text-slate-900 tracking-tight truncate" title={summaryStats.mostActiveCollege}>{summaryStats.mostActiveCollege}</h2>
               </div>
-              <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100/80">
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Least Active</p>
-                <h2 className="text-xl font-bold text-slate-900 truncate" title={summaryStats.leastActiveCollege}>{summaryStats.leastActiveCollege}</h2>
+              <div className="bg-white p-8 rounded-[32px] shadow-[0_20px_50px_rgba(0,0,0,0.02)] border border-slate-100 hover:border-[#E0BBD1]/30 hover:shadow-lg transition-all duration-500">
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">Least Active</p>
+                <h2 className="text-2xl lg:text-3xl font-black text-slate-900 tracking-tight truncate" title={summaryStats.leastActiveCollege}>{summaryStats.leastActiveCollege}</h2>
               </div>
-              <div className="bg-[#3B021F] p-5 rounded-2xl shadow-sm border border-[#3B021F] col-span-2 md:col-span-1">
-                <p className="text-xs font-bold text-[#E0BBD1] uppercase tracking-wider mb-1">Primary Concern</p>
-                <h2 className="text-lg font-bold text-white leading-tight capitalize">{summaryStats.mostCommonReasons}</h2>
+              <div className="bg-[#3B021F] p-8 rounded-[32px] shadow-[0_20px_50px_rgba(59,2,31,0.2)] border border-[#3B021F] col-span-2 md:col-span-1 flex flex-col justify-between">
+                <p className="text-[10px] font-black text-[#E0BBD1] uppercase tracking-[0.2em] mb-4">Primary Concern</p>
+                <h2 className="text-xl lg:text-2xl font-black text-white leading-tight capitalize">{summaryStats.mostCommonReasons}</h2>
               </div>
             </div>
 
             {/* Charts Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
 
               {/* Line Chart (Full width on top) */}
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100/80 lg:col-span-3">
-                <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-100">
-                  <h3 className="text-lg font-bold text-slate-900">Intake Submissions Over Time</h3>
+              <div className="bg-white p-10 rounded-[40px] shadow-[0_4px_30px_rgba(0,0,0,0.01)] border border-slate-100 lg:col-span-3">
+                <div className="flex items-center justify-between mb-10 pb-6 border-b border-slate-50">
+                  <h3 className="text-2xl font-bold text-slate-900">Intake Submissions Over Time</h3>
                 </div>
-                <div className="h-[250px] w-full">
+                <div className="h-[300px] w-full">
                   {chartOptions.bar && <Chart type="line" data={counselingSessionsData} options={chartOptions.bar} style={{ width: '100%', height: '100%' }} />}
                 </div>
               </div>
 
               {/* Pie Chart */}
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100/80">
-                <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-100">
-                  <h3 className="text-lg font-bold text-slate-900">Demographics by College</h3>
+              <div className="bg-white p-10 rounded-[40px] shadow-[0_4px_30px_rgba(0,0,0,0.01)] border border-slate-100">
+                <div className="flex items-center justify-between mb-10 pb-6 border-b border-slate-50">
+                  <h3 className="text-xl font-bold text-slate-900">Demographics by College</h3>
                 </div>
-                <div className="h-[250px] w-full flex items-center justify-center">
-                  {chartOptions.pie && <Chart type="doughnut" data={studentsPerCollegeData} options={{ ...chartOptions.pie, cutout: '65%' }} style={{ width: '100%', height: '100%' }} />}
+                <div className="h-[280px] w-full flex items-center justify-center">
+                  {chartOptions.pie && <Chart type="doughnut" data={studentsPerCollegeData} options={{ ...chartOptions.pie, cutout: '75%' }} style={{ width: '100%', height: '100%' }} />}
                 </div>
               </div>
 
               {/* Bar Chart - Years */}
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100/80">
-                <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-100">
-                  <h3 className="text-lg font-bold text-slate-900">Demographics by Year Level</h3>
+              <div className="bg-white p-10 rounded-[40px] shadow-[0_4px_30px_rgba(0,0,0,0.01)] border border-slate-100">
+                <div className="flex items-center justify-between mb-10 pb-6 border-b border-slate-50">
+                  <h3 className="text-xl font-bold text-slate-900">Demographics by Year</h3>
                 </div>
-                <div className="h-[250px] w-full">
+                <div className="h-[280px] w-full">
                   {chartOptions.bar && <Chart type="bar" data={yearPerCollegesData} options={chartOptions.bar} style={{ width: '100%', height: '100%' }} />}
                 </div>
               </div>
 
               {/* Bar Chart - Types */}
-              <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100/80">
-                <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-100">
-                  <h3 className="text-lg font-bold text-slate-900">Session Types Breakdown</h3>
+              <div className="bg-white p-10 rounded-[40px] shadow-[0_4px_30px_rgba(0,0,0,0.01)] border border-slate-100">
+                <div className="flex items-center justify-between mb-10 pb-6 border-b border-slate-50">
+                  <h3 className="text-xl font-bold text-slate-900">Session Breakdown</h3>
                 </div>
-                <div className="h-[250px] w-full">
+                <div className="h-[280px] w-full">
                   {chartOptions.bar && <Chart type="bar" data={sessionTypesData} options={{ ...chartOptions.bar, indexAxis: 'y' }} style={{ width: '100%', height: '100%' }} />}
                 </div>
               </div>

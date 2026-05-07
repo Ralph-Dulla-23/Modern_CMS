@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { updateUserProfile } from "../../Hooks/updateProfile.js";
 import { toast } from "sonner";
 
 export default function ProfilePage({ onClose }) {
-  const navigate = useNavigate();
   const [userData, setUserData] = useState({
     name: "",
     email: "",
@@ -15,9 +13,6 @@ export default function ProfilePage({ onClose }) {
   const handleClose = () => {
     if (onClose) {
       onClose();
-    } else {
-      // Fallback for when rendered as a standalone page via router
-      navigate(-1);
     }
   };
 
@@ -49,8 +44,11 @@ export default function ProfilePage({ onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm z-[60] p-4 animate-in fade-in duration-200">
-      <div className="w-full max-w-3xl bg-white rounded-3xl shadow-2xl flex flex-col sm:flex-row overflow-hidden relative animate-in zoom-in-95 duration-200">
+    <div 
+      className="fixed inset-0 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm z-[60] p-4 animate-in fade-in duration-200"
+      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+    >
+      <div className="w-full max-w-3xl bg-white rounded-3xl shadow-lg flex flex-col sm:flex-row overflow-hidden relative animate-in zoom-in-95 duration-200">
 
         {/* Close Button */}
         <button
@@ -64,7 +62,7 @@ export default function ProfilePage({ onClose }) {
         <div className="w-full sm:w-2/5 flex flex-col justify-center items-center p-8 bg-[#3B021F]/5 border-b sm:border-b-0 sm:border-r border-slate-100 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-[#E0BBD1]/20 rounded-bl-[100px] -mr-8 -mt-8"></div>
           <img src="/src/assets/img/cmslogo.png" alt="University Mascot" className="w-32 h-32 mb-4 relative z-10 drop-shadow-lg" onError={(e) => { e.target.style.display = 'none'; }} />
-          <h3 className="text-[#3B021F] font-bold text-center relative z-10">Personal Settings</h3>
+          <h3 className="text-[#3B021F] font-bold text-lg relative z-10">Personal Settings</h3>
           <p className="text-slate-500 text-xs text-center mt-1 relative z-10">Manage your system credentials.</p>
         </div>
 
@@ -74,7 +72,7 @@ export default function ProfilePage({ onClose }) {
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">Display Name</label>
+              <label className="block text-xs font-medium text-slate-500 mb-2 uppercase tracking-wide">Display Name</label>
               <input
                 type="text"
                 name="name"
@@ -86,7 +84,7 @@ export default function ProfilePage({ onClose }) {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">Primary Email</label>
+              <label className="block text-xs font-medium text-slate-500 mb-2 uppercase tracking-wide">Primary Email</label>
               <input
                 type="email"
                 name="email"
@@ -98,7 +96,7 @@ export default function ProfilePage({ onClose }) {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">Change Password</label>
+              <label className="block text-xs font-medium text-slate-500 mb-2 uppercase tracking-wide">Change Password</label>
               <input
                 type="password"
                 name="password"
@@ -113,15 +111,15 @@ export default function ProfilePage({ onClose }) {
               <button
                 type="button"
                 onClick={handleClose}
-                className="px-6 py-2.5 bg-slate-100 font-semibold text-slate-600 hover:bg-slate-200 hover:text-slate-800 rounded-full transition-colors text-sm"
+                className="px-6 py-3 bg-[#E0BBD1] hover:bg-[#d5a8c2] text-[#3B021F] font-semibold rounded-full transition-all duration-200 ease-out hover:-translate-y-[1px] text-sm"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={isLoading}
-                className={`px-8 py-2.5 bg-[#3B021F] hover:bg-[#4B122F] text-white font-semibold rounded-full shadow-md shadow-[#3B021F]/20 transition-all text-sm
-                  ${isLoading ? 'opacity-70 cursor-wait' : 'hover:-translate-y-0.5'}`}
+                className={`px-6 py-3 bg-[#3B021F] hover:bg-[#4B122F] text-white font-semibold rounded-full transition-all duration-200 ease-out shadow-[0_4px_6px_-1px_rgba(59,2,31,0.2)] hover:shadow-[0_10px_15px_-3px_rgba(59,2,31,0.3)] text-sm hover:-translate-y-[1px]
+                  ${isLoading ? 'opacity-70 cursor-wait' : ''}`}
               >
                 {isLoading ? 'Saving...' : 'Confirm Changes'}
               </button>
